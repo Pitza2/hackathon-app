@@ -14,3 +14,6 @@ Technologies Used
 
 Flutter: Dart-based framework for building cross-platform mobile applications.
 .NET: Framework for building scalable and robust applications.
+
+
+link to figma: https://www.figma.com/file/9S3HTEcGeyvjxYESYfMS2p/Personal-Bullshitting-space?type=design&node-id=263%3A53451&mode=design&t=3q26F2rIDdiAuEU5-1 
