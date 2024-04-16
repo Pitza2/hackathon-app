@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+import 'HomeScreen.dart';
+
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key, required this.title});
 
   final String title;
 
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LogInScreen> createState() => _LogInScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LogInScreenState extends State<LogInScreen> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -40,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: screenSize.width,
               height: screenSize.height * 0.3,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(34, 255, 101, 255),
+                color: const Color.fromARGB(34,135, 57, 229),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Center(
@@ -64,11 +66,26 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       onFieldSubmitted: (text){
                         if(usernameController.text==username && passwordController.text == password){
+                          // showDialog(context: context, builder:
+                          // (BuildContext context){
+                          //   return AlertDialog(
+                          //     title: new Text("lolo"),
+                          //     content: new Text("parola ok"),
+                          //   );
+                          // }
+                          // );
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(title: '',),
+                              )
+                          );
+                        }
+                        else{
                           showDialog(context: context, builder:
-                          (BuildContext context){
+                              (BuildContext context){
                             return AlertDialog(
                               title: new Text("lolo"),
-                              content: new Text("parola ok"),
+                              content: new Text("parola not ok"),
                             );
                           }
                           );
