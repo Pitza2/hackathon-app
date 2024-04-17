@@ -55,8 +55,17 @@ class _LogInScreenState extends State<LogInScreen> {
               height: 200,
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+              margin: EdgeInsets.symmetric(horizontal: 5),
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(180, 106, 75, 100).withOpacity(0.1),
+                color: const Color.fromARGB(255, 255, 131, 89),
+                  boxShadow: [
+                    BoxShadow(
+                      color:  const Color.fromARGB(255, 255, 131, 89).withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ]
               ),
               child: Center(
                 child: Column(
