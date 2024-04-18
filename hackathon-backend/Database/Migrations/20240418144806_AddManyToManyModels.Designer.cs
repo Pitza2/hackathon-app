@@ -4,6 +4,7 @@ using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(HackDbContext))]
-    partial class HackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240418144806_AddManyToManyModels")]
+    partial class AddManyToManyModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,34 +77,6 @@ namespace Database.Migrations
                     b.ToTable("Issues");
                 });
 
-            modelBuilder.Entity("Database.Models.IssueToDomain", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("DomainId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("IssueId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DomainId");
-
-                    b.HasIndex("IssueId");
-
-                    b.ToTable("IssuesToDomains");
-                });
-
             modelBuilder.Entity("Database.Models.MentorProfile", b =>
                 {
                     b.Property<string>("Id")
@@ -121,34 +96,6 @@ namespace Database.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MentorProfiles");
-                });
-
-            modelBuilder.Entity("Database.Models.MentorProfileToDomain", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("DomainId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("MentorId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DomainId");
-
-                    b.HasIndex("MentorId");
-
-                    b.ToTable("MentorProfilesToDomains");
                 });
 
             modelBuilder.Entity("Database.Models.ParticipantProfile", b =>
@@ -401,25 +348,6 @@ namespace Database.Migrations
                         .HasForeignKey("MentorProfileId");
                 });
 
-            modelBuilder.Entity("Database.Models.IssueToDomain", b =>
-                {
-                    b.HasOne("Database.Models.Domain", "Domain")
-                        .WithMany()
-                        .HasForeignKey("DomainId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Database.Models.Issue", "Issue")
-                        .WithMany()
-                        .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Domain");
-
-                    b.Navigation("Issue");
-                });
-
             modelBuilder.Entity("Database.Models.MentorProfile", b =>
                 {
                     b.HasOne("Database.Models.User", "User")
@@ -427,25 +355,6 @@ namespace Database.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Database.Models.MentorProfileToDomain", b =>
-                {
-                    b.HasOne("Database.Models.Domain", "Domain")
-                        .WithMany()
-                        .HasForeignKey("DomainId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Database.Models.MentorProfile", "Mentor")
-                        .WithMany()
-                        .HasForeignKey("MentorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Domain");
-
-                    b.Navigation("Mentor");
                 });
 
             modelBuilder.Entity("Database.Models.ParticipantProfile", b =>
