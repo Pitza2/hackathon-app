@@ -92,7 +92,12 @@ public class IdentityService : IIdentityService
             return response;
         }
 
-        var addToRole = await _userManager.AddToRoleAsync(user, "User");
+        IdentityResult addToRole = new IdentityResult();
+        if (request.MentorKey == "MentorUni")
+        {
+            addToRole = await _userManager.AddToRoleAsync(user, "Mentor");
+        }
+        else  addToRole = await _userManager.AddToRoleAsync(user, "User");
 
 
         if (addToRole.Succeeded)
