@@ -5,21 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Database;
 
-public class HackDbContext : IdentityDbContext<User, Role, string>
-{
-    public HackDbContext()
-    {
-    }
-    
+public class HackDbContext : IdentityDbContext<User>
+{ 
+    public DbSet<Domain> Domains { get; set; }
+    public DbSet<Issue> Issues { get; set; }
+    public DbSet<MentorProfile> MentorProfiles { get; set; }
+    public DbSet<ParticipantProfile> ParticipantProfiles { get; set; }
     public HackDbContext(DbContextOptions<HackDbContext> options) : base(options)
     {
     }
-    
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<User>().ToTable("AuthUser");
-        modelBuilder.Entity<Role>().ToTable("AuthRole");
-        modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AuthUserRole");
-    }
+    public HackDbContext(){}
+
 }
