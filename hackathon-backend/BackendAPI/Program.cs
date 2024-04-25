@@ -1,11 +1,16 @@
+using System.Data;
 using System.Text;
 using Business.Services;
 using Business.Services.Interfaces;
 using Database;
 using Database.Models;
+using Hangfire;
+using System.Transactions;
+using Hangfire.MySql;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using IsolationLevel = System.Transactions.IsolationLevel;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,6 +76,29 @@ services.AddDefaultIdentity<User>()
     .AddEntityFrameworkStores<HackDbContext>()
     .AddDefaultTokenProviders();
 
+services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseStorage(
+        new MySqlStorage(
+            builder.Configuration.GetConnectionString("HackHelp")+ ";Allow User Variables=true;",
+            new MySqlStorageOptions
+            {
+                TransactionIsolationLevel = (IsolationLevel)System.Data.IsolationLevel.ReadCommitted,
+                QueuePollInterval = TimeSpan.FromSeconds(15),
+                JobExpirationCheckInterval = TimeSpan.FromHours(1),
+                CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                PrepareSchemaIfNecessary = true,
+                DashboardJobListLimit = 50000,
+                TransactionTimeout = TimeSpan.FromMinutes(1),
+                TablesPrefix = "Hangfire"
+            })
+    )
+);
+
+HangfireService.ScheduleRecurringJobs();
+services.AddHangfireServer();
 
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 
