@@ -41,72 +41,83 @@ class _LogInScreenState extends State<LogInScreen> {
     }
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(180, 57, 229, 34),
-      body: Center(
+      backgroundColor: const Color(0xFF1E003B),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            "HackHelp",
-            style: TextStyle(color: Colors.white, fontSize: 70),
-          ),
-          Container(
-
-              height: 200,
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-              margin: EdgeInsets.symmetric(horizontal: 5),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 131, 89),
-                  boxShadow: [
-                    BoxShadow(
-                      color:  const Color.fromARGB(255, 255, 131, 89).withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ]
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    TextFormField(
-                      controller: usernameController,
-                      style: TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        floatingLabelStyle: TextStyle(color: Colors.white),
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Enter your username',
-                      ),
-                    ),
-                    TextFormField(
-                      controller: passwordController,
-                      style: TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        floatingLabelStyle: TextStyle(color: Colors.white),
-                        labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Enter Password',
-                      ),
-                      onFieldSubmitted: tryLogin,
-                      obscureText: true,
-                    ),
-                  ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'HackHelp',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.bold,
                 ),
-              )),
-          ElevatedButton(
-            onPressed: tryLogin,
-            child: Text("LogIn", style: TextStyle(color: Colors.white)),
-            style: ButtonStyle(
-                padding: MaterialStatePropertyAll<EdgeInsets>(
-                    EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
-                backgroundColor: MaterialStatePropertyAll<Color>(
-                    Color.fromARGB(255, 255, 131, 89))),
-          )
-        ],
-      )),
+              ),
+              const SizedBox(height: 30.0),
+              TextField(
+                controller: usernameController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  hintStyle: const TextStyle(color: Colors.white54),
+                  filled: true,
+                  fillColor: const Color(0xFF8739E5),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.all(16.0),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              TextField(
+                controller: passwordController,
+                style: const TextStyle(color: Colors.white),
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  hintStyle: const TextStyle(color: Colors.white54),
+                  filled: true,
+                  fillColor: const Color(0xFF47009C),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.all(16.0),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              SizedBox(
+                width: double.infinity,
+                height: 50.0,
+                child: ElevatedButton(
+                  style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll<EdgeInsets>(
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
+                      backgroundColor:
+                          MaterialStatePropertyAll<Color>(Color(0xFFFF8359))),
+                  onPressed: tryLogin,
+                  // color: Color(0xFFFF8359),
+                  // shape: RoundedRectangleBorder(
+                  //   borderRadius: BorderRadius.circular(12.0),
+                  // ),
+
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

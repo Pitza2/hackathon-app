@@ -8,7 +8,7 @@ class IssueViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255,255),
+        backgroundColor: const Color(0xFF1E003B),
         body: Container(
           height: double.infinity,
           width: double.infinity,
@@ -17,13 +17,13 @@ class IssueViewScreen extends StatelessWidget {
               top: 40, bottom: 300, left: 10, right: 10),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(110, 103, 226,20).withOpacity(0.5),
+            color: const Color.fromRGBO(110, 103, 226, 20).withOpacity(0.5),
             border: Border.all(color: Colors.white, width: 3),
             borderRadius: BorderRadius.circular(20.0),
           ),
-          child: Text(
-            style: TextStyle(color: Colors.white),
-              issueTitle+"\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."),
+          child: TextFormField(
+            style: const TextStyle(color: Colors.white),
+             initialValue:  issueTitle+"\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."),
         ));
   }
 }

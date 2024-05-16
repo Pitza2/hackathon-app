@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/Screens/IssueViewScreen.dart';
 
@@ -26,18 +25,21 @@ class IssueEntry extends StatelessWidget {
           ));
         },
         child: Container(
-          margin: EdgeInsets.only(bottom: 10),
+          margin: const EdgeInsets.only(bottom: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(110, 103, 226,20).withOpacity(0.5),
-                  border: Border.all(color: Colors.white, width: 3),
-                  shape: BoxShape.circle
+                    color: const Color.fromRGBO(110, 103, 226, 20)
+                        .withOpacity(0.5),
+                    border: Border.all(color: Colors.white, width: 3),
+                    shape: BoxShape.circle),
+                child: Text(
+                  key.toString().replaceAll(RegExp(r"[\[\]\<\>\']"), ""),
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
                 ),
-                child: Text(key.toString().replaceAll(RegExp(r"[\[\]\<\>\']"), ""), style: TextStyle(fontSize: 20, color: Colors.white),),
               ),
               Expanded(
                   child: Container(
@@ -45,11 +47,13 @@ class IssueEntry extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 20),
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(110, 103, 226,20).withOpacity(0.5),
+                  color:
+                      const Color.fromRGBO(110, 103, 226, 20).withOpacity(0.5),
                   border: Border.all(color: Colors.white, width: 3),
                   borderRadius: BorderRadius.circular(40.0),
                 ),
-                child: Text(issueTitle, style: TextStyle(fontSize: 20, color: Colors.white)),
+                child: Text(issueTitle,
+                    style: const TextStyle(fontSize: 20, color: Colors.white)),
               ))
             ],
           ),
@@ -71,12 +75,56 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: Container(
-      margin: EdgeInsets.only(top: 50, bottom: 10),
-      child: ListView(
-        children: issues,
+      backgroundColor: const Color(0xFF1E003B),
+      appBar: AppBar(
+        title: const Text('Issues Page'),
+        backgroundColor: const Color(0xFF8739E5),
       ),
-    )));
+      body: Center(
+          child: Container(
+        margin: const EdgeInsets.only(top: 50, bottom: 10),
+        child: ListView(
+          children: issues,
+        ),
+      )),
+      bottomNavigationBar: BottomAppBar(
+        color: const Color(0xFF47009C),
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                          Color(0xFFFF8359))
+                  ),
+                  onPressed: () {
+                    // Add issue functionality
+                    print('Add Issue');
+                  },
+                  child: const Text(
+                    'Add Issue',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),//0xFFFFDF40
+                ElevatedButton(
+                  style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                          Color(0xFFFFDF40))
+                  ),
+                  onPressed: () {
+                    // Navigate to my issues functionality
+                    print('My Issues');
+                  },
+                  child: const Text(
+                    'My Issues',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            )),
+      ),
+    );
   }
 }
