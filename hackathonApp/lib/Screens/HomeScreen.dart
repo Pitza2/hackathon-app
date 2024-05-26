@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/Screens/IssueViewScreen.dart';
 
+import 'NewsScreen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
 
@@ -90,9 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomAppBar(
         color: const Color(0xFF47009C),
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 3.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 ElevatedButton(
                   style: const ButtonStyle(
@@ -107,11 +110,26 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Add Issue',
                     style: TextStyle(color: Colors.white),
                   ),
-                ),//0xFFFFDF40
+                ),
                 ElevatedButton(
                   style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll<Color>(
-                          Color(0xFFFFDF40))
+                          Color(0xFFFF8359))
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>  NewsScreen(),
+                    ));
+                  },
+                  child: const Text(
+                    'News',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                ElevatedButton(
+                  style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(
+                          Color(0xFFFF8359))
                   ),
                   onPressed: () {
                     // Navigate to my issues functionality
