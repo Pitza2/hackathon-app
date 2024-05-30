@@ -4,6 +4,7 @@ using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(HackDbContext))]
-    partial class HackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530190421_participantProfiles1")]
+    partial class participantProfiles1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,29 +56,16 @@ namespace Database.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsSolved")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("ProfileId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
 
                     b.ToTable("Issues");
                 });
@@ -405,15 +395,6 @@ namespace Database.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasDiscriminator().HasValue("Role");
-                });
-
-            modelBuilder.Entity("Database.Models.Issue", b =>
-                {
-                    b.HasOne("Database.Models.ParticipantProfile", "Profile")
-                        .WithMany()
-                        .HasForeignKey("ProfileId");
-
-                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("Database.Models.MentorProfile", b =>

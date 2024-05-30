@@ -9,6 +9,7 @@ public class ParticipantProfile : IEntity
     public string Table { get; set; }
     [Key]
     public string Id { get; set; }
+    public List<Domain> Domains { get; set; }
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
 }

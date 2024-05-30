@@ -4,6 +4,7 @@ using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(HackDbContext))]
-    partial class HackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530183844_fixDomains2")]
+    partial class fixDomains2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,14 +36,24 @@ namespace Database.Migrations
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
+                    b.Property<string>("DomainId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<string>("ParticipantProfileId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DomainId");
+
+                    b.HasIndex("ParticipantProfileId");
 
                     b.ToTable("Domains");
                 });
@@ -53,29 +66,16 @@ namespace Database.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsSolved")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("ProfileId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProfileId");
 
                     b.ToTable("Issues");
                 });
@@ -232,21 +232,6 @@ namespace Database.Migrations
                     b.HasIndex("MentorProfilesId");
 
                     b.ToTable("DomainMentorProfile");
-                });
-
-            modelBuilder.Entity("DomainParticipantProfile", b =>
-                {
-                    b.Property<string>("DomainsId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ParticipantProfilesId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("DomainsId", "ParticipantProfilesId");
-
-                    b.HasIndex("ParticipantProfilesId");
-
-                    b.ToTable("DomainParticipantProfile");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -407,13 +392,15 @@ namespace Database.Migrations
                     b.HasDiscriminator().HasValue("Role");
                 });
 
-            modelBuilder.Entity("Database.Models.Issue", b =>
+            modelBuilder.Entity("Database.Models.Domain", b =>
                 {
-                    b.HasOne("Database.Models.ParticipantProfile", "Profile")
-                        .WithMany()
-                        .HasForeignKey("ProfileId");
+                    b.HasOne("Database.Models.Domain", null)
+                        .WithMany("Domains")
+                        .HasForeignKey("DomainId");
 
-                    b.Navigation("Profile");
+                    b.HasOne("Database.Models.ParticipantProfile", null)
+                        .WithMany("Domains")
+                        .HasForeignKey("ParticipantProfileId");
                 });
 
             modelBuilder.Entity("Database.Models.MentorProfile", b =>
@@ -460,21 +447,6 @@ namespace Database.Migrations
                     b.HasOne("Database.Models.MentorProfile", null)
                         .WithMany()
                         .HasForeignKey("MentorProfilesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DomainParticipantProfile", b =>
-                {
-                    b.HasOne("Database.Models.Domain", null)
-                        .WithMany()
-                        .HasForeignKey("DomainsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Database.Models.ParticipantProfile", null)
-                        .WithMany()
-                        .HasForeignKey("ParticipantProfilesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -528,6 +500,16 @@ namespace Database.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Database.Models.Domain", b =>
+                {
+                    b.Navigation("Domains");
+                });
+
+            modelBuilder.Entity("Database.Models.ParticipantProfile", b =>
+                {
+                    b.Navigation("Domains");
                 });
 #pragma warning restore 612, 618
         }

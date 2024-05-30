@@ -1,33 +1,62 @@
-using System.Data;
 using System.Text;
+using BackendAPI.Filters;
 using Business.Services;
 using Business.Services.Interfaces;
 using Database;
 using Database.Models;
 using Hangfire;
-using System.Transactions;
 using Hangfire.MySql;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using IsolationLevel = System.Transactions.IsolationLevel;
-
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var config = builder.Configuration;
+
 // Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
-services.AddControllers();
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+
+// Add Swagger generation with JWT support
+services.AddSwaggerGen(opt =>
+{
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
 
 builder.Services.AddDbContext<HackDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("HackHelp");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
-
 
 services.AddCors(options =>
 {
@@ -39,18 +68,22 @@ services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-services.AddAuthentication()
+services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(x =>
     {
         x.SaveToken = true;
         x.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey =
-                new SymmetricSecurityKey(
-                    Encoding.ASCII.GetBytes(config.GetSection("JWT:Secret").Value)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(config.GetSection("JWT:Secret").Value)),
             ValidateIssuer = true,
             ValidIssuer = config.GetSection("JWT:Issuer").Value,
             ValidateAudience = false,
@@ -82,7 +115,7 @@ services.AddHangfire(configuration => configuration
     .UseRecommendedSerializerSettings()
     .UseStorage(
         new MySqlStorage(
-            builder.Configuration.GetConnectionString("HackHelp")+ ";Allow User Variables=true;",
+            builder.Configuration.GetConnectionString("HackHelp") + ";Allow User Variables=true;",
             new MySqlStorageOptions
             {
                 TransactionIsolationLevel = (IsolationLevel)System.Data.IsolationLevel.ReadCommitted,
@@ -97,10 +130,13 @@ services.AddHangfire(configuration => configuration
     )
 );
 
-HangfireService.ScheduleRecurringJobs();
-services.AddHangfireServer();
+services.AddHangfireServer(config => config.WorkerCount = 1);
 
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<IMentorService, MentorService>();
+builder.Services.AddScoped<IParticipantService, ParticipantService>();
+builder.Services.AddScoped<IDomainService, DomainService>();
+builder.Services.AddScoped<IIssueService, IssueService>();
 
 var app = builder.Build();
 
@@ -108,9 +144,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HackHelp.Api v1"));
 }
-app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -118,10 +154,13 @@ app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseHttpsRedirection();
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -129,4 +168,5 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
+app.UseHangfireDashboard();
 app.Run();

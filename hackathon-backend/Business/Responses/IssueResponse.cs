@@ -1,14 +1,13 @@
-using Database.Models.Helpers;
+using Database.Models;
 
-namespace Database.Models;
+namespace Business.Responses;
 
-public class Issue : IOrderableEntity
+public class IssueResponse
 {
     public string Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public int DisplayOrder { get; set; }
-    public ParticipantProfile Profile { get; set; }
     public List<Domain> Domains { get; set; }
     public bool IsSolved { get; set; }
     public DateTime Created { get; set; }
