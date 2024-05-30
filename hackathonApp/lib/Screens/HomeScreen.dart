@@ -32,11 +32,12 @@ class IssueEntry extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(110, 103, 226, 20)
                         .withOpacity(0.5),
-                    border: Border.all(color: Colors.white, width: 3),
+                    border: Border.all(color: Colors.white, width: 1),
                     shape: BoxShape.circle),
                 child: Text(
                   key.toString().replaceAll(RegExp(r"[\[\]\<\>\']"), ""),
@@ -48,10 +49,11 @@ class IssueEntry extends StatelessWidget {
                 height: 50,
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 20),
+                margin: const EdgeInsets.only(right: 15),
                 decoration: BoxDecoration(
                   color:
                       const Color.fromRGBO(110, 103, 226, 20).withOpacity(0.5),
-                  border: Border.all(color: Colors.white, width: 3),
+                  border: Border.all(color: Colors.white, width: 1),
                   borderRadius: BorderRadius.circular(40.0),
                 ),
                 child: Text(issueTitle,

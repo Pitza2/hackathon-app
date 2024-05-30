@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/Screens/HomeScreen.dart';
 
-import 'Screens/RegisterScreen.dart';
+import 'Screens/LogInScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

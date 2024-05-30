@@ -1,24 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hackathon_app/Screens/LogInScreen.dart';
-import 'package:hackathon_app/Screens/MentorInfoScreen.dart';
+import 'package:hackathon_app/Screens/RegisterScreen.dart';
 
-class RegisterScreen extends StatelessWidget {
+import 'HomeScreen.dart';
+
+class LogInScreen extends StatefulWidget {
+  const LogInScreen({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
+    final String username = "partisipant";
+    final String password = "parola01";
+    final Size screenSize = MediaQuery.of(context).size;
     final TextEditingController usernameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final TextEditingController mentorKeyController = TextEditingController();
     void tryLogin([String text = ""]) {
-      if (mentorKeyController.text.isEmpty) {
+      if (usernameController.text == username &&
+          passwordController.text == password) {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const LogInScreen(
+          builder: (context) => const HomeScreen(
             title: '',
           ),
-        ));
-      } else if (mentorKeyController.text == "mentorUni") {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MentorInfoScreen(),
         ));
       } else {
         showDialog(
@@ -26,7 +35,7 @@ class RegisterScreen extends StatelessWidget {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: new Text("lolo"),
-                content: new Text("mentor key wrong"),
+                content: new Text("parola not ok"),
               );
             });
       }
@@ -81,22 +90,6 @@ class RegisterScreen extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(16.0),
                 ),
               ),
-              TextField(
-                controller: mentorKeyController,
-                style: const TextStyle(color: Colors.white),
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'mentor key',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  filled: true,
-                  fillColor: const Color(0xFF47009C),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.all(16.0),
-                ),
-              ),
               const SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
@@ -108,13 +101,9 @@ class RegisterScreen extends StatelessWidget {
                       backgroundColor:
                           MaterialStatePropertyAll<Color>(Color(0xFFFF8359))),
                   onPressed: tryLogin,
-                  // color: Color(0xFFFF8359),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(12.0),
-                  // ),
 
                   child: const Text(
-                    'Register',
+                    'Login',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -122,6 +111,35 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              Row(
+                children: [
+                  Text(
+                    'No Account?',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: const ButtonStyle(
+                        padding: MaterialStatePropertyAll<EdgeInsets>(
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
+                        backgroundColor:
+                        MaterialStatePropertyAll<Color>(Color(0xFFFF8359))),
+                    onPressed: () => {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RegisterScreen()))
+                    },
+
+                    child: const Text(
+                      'Register',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

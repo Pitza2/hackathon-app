@@ -20,20 +20,32 @@ class NewsScreen extends StatelessWidget {
           itemCount: newsItems.length,
           itemBuilder: (context, index) {
             return Container(
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                color: Color(0xFF47009C),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Text(
-                newsItems[index],
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
+                margin: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Color(0xFF47009C),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-              ),
-            );
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      newsItems[index],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    // Adds some spacing between the text and the image
+                    Image.asset(
+                      'assets/cat.jpeg',
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                )
+                );
           },
         ),
       ),
