@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/Screens/LogInScreen.dart';
 import 'package:hackathon_app/Screens/MentorInfoScreen.dart';
+import 'package:hive/hive.dart';
 
 class RegisterScreen extends StatelessWidget {
   @override
@@ -11,6 +12,8 @@ class RegisterScreen extends StatelessWidget {
     final TextEditingController mentorKeyController = TextEditingController();
     void tryLogin([String text = ""]) {
       if (mentorKeyController.text.isEmpty) {
+        Hive.box('data').put('spec', '');
+        Hive.box('data').put('role', 'participant');
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => const LogInScreen(
             title: '',
@@ -32,8 +35,19 @@ class RegisterScreen extends StatelessWidget {
       }
     }
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF1E003B),
+    return Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+        stops: [0, 0.6, 0.86],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        colors: [
+        Color(0xFFFF8359),
+    Color(0xFF47009C),
+    Color(0xFF1E003B)
+    ])),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -126,6 +140,6 @@ class RegisterScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 }

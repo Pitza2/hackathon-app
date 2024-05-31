@@ -34,116 +34,130 @@ class _LogInScreenState extends State<LogInScreen> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: new Text("lolo"),
-                content: new Text("parola not ok"),
+                title: new Text("error"),
+                content: new Text("wrong username or password"),
               );
             });
       }
     }
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF1E003B),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'HackHelp',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 30.0),
-              TextField(
-                controller: usernameController,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: 'Email',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  filled: true,
-                  fillColor: const Color(0xFF8739E5),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.all(16.0),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              TextField(
-                controller: passwordController,
-                style: const TextStyle(color: Colors.white),
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  filled: true,
-                  fillColor: const Color(0xFF47009C),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.all(16.0),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              SizedBox(
-                width: double.infinity,
-                height: 50.0,
-                child: ElevatedButton(
-                  style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll<EdgeInsets>(
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
-                      backgroundColor:
-                          MaterialStatePropertyAll<Color>(Color(0xFFFF8359))),
-                  onPressed: tryLogin,
-
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              Row(
+    return Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                stops: [0, 0.6, 0.86],
+                begin: Alignment.bottomRight,
+                end: Alignment.topLeft,
+                colors: [
+                  Color(0xFFFF8359),
+                  Color(0xFF47009C),
+                  Color(0xFF1E003B)
+                ])),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'No Account?',
+                  const Text(
+                    'HackHelp',
                     style: TextStyle(
                       color: Colors.white,
+                      fontSize: 32.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ElevatedButton(
-                    style: const ButtonStyle(
-                        padding: MaterialStatePropertyAll<EdgeInsets>(
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
-                        backgroundColor:
-                        MaterialStatePropertyAll<Color>(Color(0xFFFF8359))),
-                    onPressed: () => {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> RegisterScreen()))
-                    },
-
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                  const SizedBox(height: 30.0),
+                  TextField(
+                    controller: usernameController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      filled: true,
+                      fillColor: const Color(0xFF8739E5),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.all(16.0),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  TextField(
+                    controller: passwordController,
+                    style: const TextStyle(color: Colors.white),
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      filled: true,
+                      fillColor: const Color(0xFF47009C),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.all(16.0),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50.0,
+                    child: ElevatedButton(
+                      style: const ButtonStyle(
+                          padding: MaterialStatePropertyAll<EdgeInsets>(
+                              EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12)),
+                          backgroundColor: MaterialStatePropertyAll<Color>(
+                              Color(0xFFFF8359))),
+                      onPressed: tryLogin,
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'No Account?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                            padding: MaterialStatePropertyAll<EdgeInsets>(
+                                EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12)),
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                Color(0xFFFF8359))),
+                        onPressed: () => {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => RegisterScreen()))
+                        },
+                        child: const Text(
+                          'Register',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

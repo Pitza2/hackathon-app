@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/Screens/HomeScreen.dart';
+import 'package:hive/hive.dart';
 
 class MentorInfoScreen extends StatefulWidget {
   @override
@@ -9,58 +11,75 @@ class MentorInfoScreen extends StatefulWidget {
 }
 
 class _MentorInfoScreen extends State<MentorInfoScreen> {
-  final items = ['One', 'Two', 'Three', 'Four'];
-  String selectedValue = 'Four';
-
+  final List<String> specializations = ['Web', 'Mobile', 'Embedded', 'Civic'];
+  String dropdownValue='Web';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Register'),
-        backgroundColor: Color(0xFF8739E5),
-      ),
-      backgroundColor: const Color(0xFF1E003B),
-      body: SafeArea(
-          child: Center(
-              child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+    return Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+        stops: [0, 0.6, 0.86],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        colors: [
+        Color(0xFFFF8359),
+    Color(0xFF47009C),
+    Color(0xFF1E003B)
+    ])),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             const Text(
-              'Choose your specialization',
+              'Choose Specialization',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
+                fontSize: 24,
+                color: Colors.white, // Text color
               ),
             ),
-            const SizedBox(height: 30.0),
+            SizedBox(height: 20),
             Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Color(0xFFFF8359),
-                    borderRadius: BorderRadius.circular(10)),
-
-                // dropdown below..
-                child: Expanded(
-                  child: DropdownButton<String>(
-                    value: selectedValue,
-                    onChanged: (newValue) =>
-                        setState(() => selectedValue = newValue!),
-                    items: items
-                        .map<DropdownMenuItem<String>>(
-                            (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                ))
-                        .toList(),
-
-                    // add extra sugar..
-                    icon: Icon(Icons.arrow_drop_down),
-                    iconSize: 42,
-                    underline: SizedBox(),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+                child: DropdownButtonFormField<String>(
+              icon: const Icon(Icons.keyboard_arrow_down_rounded),
+              iconSize: 40,
+              decoration: const InputDecoration(
+                fillColor: Color(0xFF8739E5),
+                filled: true,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black38,
+                    width: 2,
                   ),
-                ))
-          ]))),
-    );
+                ),
+              ),
+              hint: const Text('Select your favourite fruit'),
+              dropdownColor: Color(0xFF8739E5),
+              value: dropdownValue,
+              onChanged: (String? newValue) {
+                setState(() {
+                  dropdownValue = newValue!;
+                }
+                );
+                Hive.box('data').put('spec',newValue);
+                Hive.box('data').put('role','mentor');
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen(title: '')));
+              },
+              items: specializations
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                  ),
+                );
+              }).toList(),
+            ))
+          ],
+        ),
+      ),
+    ));
   }
 }

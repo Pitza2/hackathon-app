@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/Screens/HomeScreen.dart';
+import 'package:hive/hive.dart';
 
 import 'Screens/LogInScreen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  var box= await Hive.openBox('data');
+  final List<String> specializations = ['Web', 'Mobile', 'Embedded', 'Civic'];
+  Hive.box('data').put('specList',specializations);
   runApp(const MyApp());
 
 }
@@ -16,6 +19,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'HackHelp',
       routes: {
