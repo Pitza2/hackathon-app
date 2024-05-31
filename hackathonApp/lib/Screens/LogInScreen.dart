@@ -122,6 +122,7 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20.0),
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

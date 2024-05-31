@@ -27,7 +27,16 @@ class NewsScreen extends StatelessWidget {
         backgroundColor: Color(0xFF8739E5),
       ),
       body: Container(
-        color: Color(0xFF1E003B),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              stops: [0, 0.6, 0.86],
+              begin: Alignment.bottomRight,
+              end: Alignment.topLeft,
+              colors: [
+                Color(0xFFFF8359),
+                Color(0xFF47009C),
+                Color(0xFF1E003B)
+              ])),
         child: ListView.builder(
           itemCount: newsItems.length,
           itemBuilder: (context, index) {
@@ -51,10 +60,7 @@ class NewsScreen extends StatelessWidget {
                       ),
                     ),
                     // Adds some spacing between the text and the image
-                    Image.asset(
-                      'assets/cat.jpeg',
-                      fit: BoxFit.cover,
-                    ),
+                    Image(image: AssetImage("assets/cat.jpeg"), fit: BoxFit.cover),
                   ],
                 )
                 );

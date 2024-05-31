@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/HiveManager.dart';
+import 'package:hackathon_app/Screens/IssueData.dart';
+import 'package:hive/hive.dart';
 
 class NewIssueScreen extends StatefulWidget {
   @override
@@ -7,89 +10,115 @@ class NewIssueScreen extends StatefulWidget {
 }
 
 class _NewIssueScreen extends State<NewIssueScreen> {
-  String selectedCategory = 'Category 1';
-  String description = '';
-  List<String> categories = ['Category 1', 'Category 2', 'Category 3'];
+  String dropdownValue='Web';
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+        stops: [0, 0.6, 0.86],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        colors: [
+        Color(0xFFFF8359),
+    Color(0xFF47009C),
+    Color(0xFF1E003B)
+    ])),
+    child: Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text('Category and Description'),
+        backgroundColor: const Color(0xFF1E003B),
+        title: const Text('Category and Description', style: TextStyle(color: Colors.white),),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Pick a Category:',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: Colors.white
               ),
             ),
-            DropdownButton<String>(
-              value: selectedCategory,
-              onChanged: (newValue) {
-                setState(() {
-                  selectedCategory = newValue!;
-                });
-              },
-              items: categories.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            Container(
+              color: Colors.transparent,
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: DropdownButtonFormField<String>(
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  iconSize: 40,
+                  decoration: const InputDecoration(
+                    fillColor: Color(0xFF8739E5),
+                    filled: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                  hint: const Text('select type of issue',style: TextStyle(color: Colors.white),),
+                  dropdownColor: Color(0xFF8739E5),
+                  value: dropdownValue,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue = newValue!;
+                    }
+                    );
+                    Hive.box('data').put('spec',newValue);
+                  },
+                  items: Hive.box('data').get('specList')
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                      ),
+                    );
+                  }).toList(),
+                )),
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: titleController,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintStyle: const TextStyle(color: Colors.white54),
+                hintText: 'Enter title',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 1,
+              maxLength: 20,
             ),
-            SizedBox(height: 20),
-            TextField(
-              decoration: InputDecoration(
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: descriptionController,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintStyle: const TextStyle(color: Colors.white54),
                 hintText: 'Enter description (10-50 words)',
                 border: OutlineInputBorder(),
               ),
               maxLines: 3,
-              onChanged: (value) {
-                setState(() {
-                  description = value;
-                });
-              },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Validate description length
-                if (description.trim().split(' ').length < 10 ||
-                    description.trim().split(' ').length > 50) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Invalid Description'),
-                        content: Text('Description must be between 10 and 50 words.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  // Process the category and description
-                  print('Selected Category: $selectedCategory');
-                  print('Description: $description');
-                }
-              },
-              child: Text('Submit'),
+                HiveManager.instance.issueBox.add(IssueData(titleController.text, descriptionController.text, dropdownValue));
+                Navigator.pop(context);
+                  },
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll<Color>(
+                    Color(0xFFFF8359))),
+              child: const Text('Submit',style: TextStyle(color: Colors.white),),
             ),
           ],
         ),
       ),
-    );
+    ));
   }
 }

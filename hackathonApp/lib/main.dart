@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/HiveManager.dart';
 import 'package:hackathon_app/Screens/HomeScreen.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import 'Screens/IssueData.dart';
 import 'Screens/LogInScreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // To intialise the hive database
+  await Hive.initFlutter();
+  await HiveManager.instance.initHiveManager();
   var box= await Hive.openBox('data');
   final List<String> specializations = ['Web', 'Mobile', 'Embedded', 'Civic'];
   Hive.box('data').put('specList',specializations);
+  final List<IssueData> Issues = [
+    IssueData('Issue 1', 'webwebweb', 'Web'),
+    IssueData('Issue 2', 'webwebweb2', 'Web'),
+    IssueData('Issue 3', 'webwebweb3', 'Web'),
+    IssueData('Issue 1', 'mobilemobilemobilemobile ', 'Mobile'),
+    IssueData('Issue 2', 'mobilemobilemobilemobile 2', 'Mobile'),
+    IssueData('Issue 3', 'mobilemobilemobilemobile 3', 'Mobile'),
+    IssueData('Issue 1', 'EmbeddedEmbeddedEmbedded 1', 'Embedded'),
+    IssueData('Issue 2', 'EmbeddedEmbeddedEmbedded 2', 'Embedded'),
+    IssueData('Issue 3', 'EmbEmbeddedEmbeddedEmbedded 3', 'Embedded'),
+    IssueData('Issue 1', 'CivicCivicCivic 1', 'Civic'),
+    IssueData('Issue 2', 'CivicCivicCivic 2', 'Civic'),
+    IssueData('Issue 3', 'CivicCivicCivic 3', 'Civic'),
+    ];
+  for(int i=0;i<Issues.length;i++){
+    HiveManager.instance.issueBox.add(Issues[i]);
+  }
+
   runApp(const MyApp());
 
 }
@@ -26,21 +50,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(title: 'Home'),
       },
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
+        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
