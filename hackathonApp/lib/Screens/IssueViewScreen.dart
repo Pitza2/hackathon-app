@@ -10,8 +10,19 @@ class IssueViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1E003B),
+    return Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+        stops: [0, 0.6, 0.86],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        colors: [
+        Color(0xFFFF8359),
+    Color(0xFF47009C),
+    Color(0xFF1E003B)
+    ])),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E003B),
         title: Text(this.issueTitle, style: TextStyle(color: Colors.white),),
@@ -109,6 +120,6 @@ class IssueViewScreen extends StatelessWidget {
         child: Icon(Icons.save),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );
+    ));
   }
 }

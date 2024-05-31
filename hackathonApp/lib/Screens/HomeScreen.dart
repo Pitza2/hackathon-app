@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/Screens/IssueViewScreen.dart';
+import 'package:hackathon_app/Screens/NewIssueScreen.dart';
 
 import 'NewsScreen.dart';
 
@@ -32,11 +33,12 @@ class IssueEntry extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(15),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(110, 103, 226, 20)
                         .withOpacity(0.5),
-                    border: Border.all(color: Colors.white, width: 3),
+                    border: Border.all(color: Colors.white, width: 1),
                     shape: BoxShape.circle),
                 child: Text(
                   key.toString().replaceAll(RegExp(r"[\[\]\<\>\']"), ""),
@@ -48,10 +50,11 @@ class IssueEntry extends StatelessWidget {
                 height: 50,
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 20),
+                margin: const EdgeInsets.only(right: 15),
                 decoration: BoxDecoration(
                   color:
                       const Color.fromRGBO(110, 103, 226, 20).withOpacity(0.5),
-                  border: Border.all(color: Colors.white, width: 3),
+                  border: Border.all(color: Colors.white, width: 1),
                   borderRadius: BorderRadius.circular(40.0),
                 ),
                 child: Text(issueTitle,
@@ -76,8 +79,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1E003B),
+    return Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+        stops: [0, 0.6, 0.86],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        colors: [
+        Color(0xFFFF8359),
+    Color(0xFF47009C),
+    Color(0xFF1E003B)
+    ])),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: const Text('Issues Page'),
         backgroundColor: const Color(0xFF8739E5),
@@ -104,6 +118,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   onPressed: () {
                     // Add issue functionality
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NewIssueScreen(),
+                    ));
                     print('Add Issue');
                   },
                   child: const Text(
@@ -143,6 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             )),
       ),
-    );
+    ));
   }
 }

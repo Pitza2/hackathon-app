@@ -1,32 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/Screens/LogInScreen.dart';
+import 'package:hackathon_app/Screens/MentorInfoScreen.dart';
+import 'package:hive/hive.dart';
 
-import 'HomeScreen.dart';
-
-class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<LogInScreen> createState() => _LogInScreenState();
-}
-
-class _LogInScreenState extends State<LogInScreen> {
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final String username = "partisipant";
-    final String password = "parola01";
-    final Size screenSize = MediaQuery.of(context).size;
     final TextEditingController usernameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    final TextEditingController mentorKeyController = TextEditingController();
     void tryLogin([String text = ""]) {
-      if (usernameController.text == username &&
-          passwordController.text == password) {
+      if (mentorKeyController.text.isEmpty) {
+        Hive.box('data').put('spec', '');
+        Hive.box('data').put('role', 'participant');
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const HomeScreen(
+          builder: (context) => const LogInScreen(
             title: '',
           ),
+        ));
+      } else if (mentorKeyController.text == "mentorUni") {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MentorInfoScreen(),
         ));
       } else {
         showDialog(
@@ -34,14 +29,25 @@ class _LogInScreenState extends State<LogInScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: new Text("lolo"),
-                content: new Text("parola not ok"),
+                content: new Text("mentor key wrong"),
               );
             });
       }
     }
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF1E003B),
+    return Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+        stops: [0, 0.6, 0.86],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        colors: [
+        Color(0xFFFF8359),
+    Color(0xFF47009C),
+    Color(0xFF1E003B)
+    ])),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -89,6 +95,22 @@ class _LogInScreenState extends State<LogInScreen> {
                   contentPadding: const EdgeInsets.all(16.0),
                 ),
               ),
+              TextField(
+                controller: mentorKeyController,
+                style: const TextStyle(color: Colors.white),
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'mentor key',
+                  hintStyle: const TextStyle(color: Colors.white54),
+                  filled: true,
+                  fillColor: const Color(0xFF47009C),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.all(16.0),
+                ),
+              ),
               const SizedBox(height: 20.0),
               SizedBox(
                 width: double.infinity,
@@ -106,7 +128,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   // ),
 
                   child: const Text(
-                    'Login',
+                    'Register',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -118,6 +140,6 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

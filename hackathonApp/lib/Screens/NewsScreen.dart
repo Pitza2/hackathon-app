@@ -9,7 +9,19 @@ class NewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+        stops: [0, 0.6, 0.86],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+        colors: [
+        Color(0xFFFF8359),
+    Color(0xFF47009C),
+    Color(0xFF1E003B)
+    ])),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text('News'),
         backgroundColor: Color(0xFF8739E5),
@@ -20,23 +32,35 @@ class NewsScreen extends StatelessWidget {
           itemCount: newsItems.length,
           itemBuilder: (context, index) {
             return Container(
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                color: Color(0xFF47009C),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Text(
-                newsItems[index],
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
+                margin: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Color(0xFF47009C),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-              ),
-            );
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      newsItems[index],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    // Adds some spacing between the text and the image
+                    Image.asset(
+                      'assets/cat.jpeg',
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                )
+                );
           },
         ),
       ),
-    );
+    ));
   }
 }
