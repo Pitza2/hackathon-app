@@ -11,7 +11,6 @@ class MentorInfoScreen extends StatefulWidget {
 }
 
 class _MentorInfoScreen extends State<MentorInfoScreen> {
-  final List<String> specializations = ['Web', 'Mobile', 'Embedded', 'Civic'];
   String dropdownValue='Web';
   @override
   Widget build(BuildContext context) {
@@ -67,8 +66,8 @@ class _MentorInfoScreen extends State<MentorInfoScreen> {
                 Hive.box('data').put('role','mentor');
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen(title: '')));
               },
-              items: specializations
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: Hive.box('data').get('specList')
+                  .map<DropdownMenuItem<String>>((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(

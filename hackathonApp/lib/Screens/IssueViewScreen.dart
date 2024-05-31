@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/Screens/HomeScreen.dart';
 import 'package:hackathon_app/Screens/NewsScreen.dart';
 
+import 'IssueData.dart';
+
 class IssueViewScreen extends StatelessWidget {
-  String issueTitle = "issue";
-  IssueViewScreen(String title){
-    this.issueTitle=title.replaceAll(RegExp(r"[\[\]<>\']"), "");
-  }
-  final TextEditingController _textEditingController = TextEditingController(text:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.');
+  IssueData data;
+  IssueViewScreen(this.data){data.issueTitle=data.issueTitle.replaceAll(RegExp(r"[\[\]<>\']"), ""); _textEditingController.text=data.issueText; }
+  final TextEditingController _textEditingController = TextEditingController(text:'');
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class IssueViewScreen extends StatelessWidget {
     backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E003B),
-        title: Text(this.issueTitle, style: TextStyle(color: Colors.white),),
+        title: Text(this.data.issueTitle, style: TextStyle(color: Colors.white),),
       ),
       body: Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*0.2,left: 20.0,right: 20.0),

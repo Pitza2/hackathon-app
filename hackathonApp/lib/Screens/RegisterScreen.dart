@@ -95,6 +95,7 @@ class RegisterScreen extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(16.0),
                 ),
               ),
+              const SizedBox(height: 20.0),
               TextField(
                 controller: mentorKeyController,
                 style: const TextStyle(color: Colors.white),
@@ -122,11 +123,6 @@ class RegisterScreen extends StatelessWidget {
                       backgroundColor:
                           MaterialStatePropertyAll<Color>(Color(0xFFFF8359))),
                   onPressed: tryLogin,
-                  // color: Color(0xFFFF8359),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(12.0),
-                  // ),
-
                   child: const Text(
                     'Register',
                     style: TextStyle(
